@@ -13,7 +13,7 @@ Repository with custom code used for investigating disease- and health-associate
 
 These scripts were used for downstream analysis and plotting:
 
-### Phylogenetic analysis
+#### <ins>Phylogenetic analysis</ins>
 
 * [itol_gwas.R](scripts/itol_gwas.R)
 * [itol_species.R](scripts/itol_species.R)
