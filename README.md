@@ -1,6 +1,6 @@
 # Klebsiella pneumoniae MAGs
 
-Repository with custom code used for investigating disease- and health-associated features of Klebsiella pneumoniae
+Repository with custom code used for investigating disease- and health-associated features of Klebsiella pneumoniae using MAGs and isolate genomes.
 
 ## Workflows
 
@@ -11,7 +11,7 @@ Repository with custom code used for investigating disease- and health-associate
 
 ## Post-processing scripts
 
-These scripts were used for downstream analysis and plotting
+These scripts were used for downstream analysis and plotting:
 
 ### Phylogenetic analysis
 
