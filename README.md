@@ -4,9 +4,9 @@ Repository with custom code used for investigating disease- and health-associate
 
 ## Phylogenetic analysis
 
-scripts/itol_gwas.R
-scripts/itol_species.R
-scripts/metadata_adonis.R
+[scripts/itol_gwas.R](scripts/itol_gwas.R)
+[scripts/itol_species.R](scripts/itol_species.R)
+[scripts/metadata_adonis.R](scripts/metadata_adonis.R)
 scripts/metadata_sankey.R
 scripts/tanglegram_panaroo-vs-snippy.R
 scripts/tanglegram_pan-vs-core.R
