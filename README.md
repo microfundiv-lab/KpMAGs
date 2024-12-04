@@ -23,24 +23,24 @@ These scripts were used for downstream analysis and plotting:
 * [tanglegram_pan-vs-core.R](scripts/tanglegram_pan-vs-core.R)
 * [pd_fold-change.R](scripts/pd_fold-change.R)
 
-### Pan-genome reconstruction
+#### <ins>Pan-genome reconstruction</ins>
 
 * [panaroo_cog-plot.R](scripts/panaroo_cog-plot.R)
 * [panaroo_combined.R](scripts/panaroo_combined.R)
 * [panaroo_params.R](scripts/panaroo_params.R)
 
-### Machine Learning modelling
+#### <ins>Machine Learning modelling</ins>
 
 * [ml_boxplots.R](scripts/ml_boxplots.R)
 * [ml_mags-vs-isolates.R](scripts/ml_mags-vs-isolates.R)
 * [ml_roc-curves.R](scripts/ml_roc-curves.R)
 
-### Microbial Genome-Wide Association Study (mGWAS)
+#### <ins>Microbial Genome-Wide Association Study (mGWAS)</ins>
 
 * [pyseer-to-cog.R](scripts/pyseer-to-cog.R)
 * [pyseer_volcano-cog.R](scripts/pyseer_volcano-cog.R)
 
-### Other
+#### <ins>Other</ins>
 
 * [vir-res_scores.R](scripts/vir-res_scores.R)
 * [STs.R](scripts/STs.R)
