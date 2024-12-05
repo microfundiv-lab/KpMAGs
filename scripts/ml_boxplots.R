@@ -4,9 +4,9 @@ library(ggpubr)
 library(ggplot2)
 
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/machine_learning/")
-disease.all = read.csv("diseased-all_filtmags/diseased-all_performance_results.csv")
+disease.all = read.csv("diseased-all_filtmags_all/diseased-all_filtmags_all_performance_results.csv")
 disease.all$group = "Diseased (all)"
-disease.inf = read.csv("diseased-inf_filtmags/diseased-inf_performance_results.csv")
+disease.inf = read.csv("diseased-inf_filtmags_all/diseased-inf_filtmags_all_performance_results.csv")
 disease.inf$group = "Diseased (infection only)"
 ml.data = rbind(disease.all, disease.inf)
 ml.melt = reshape2::melt(ml.data)
@@ -21,13 +21,12 @@ ml.melt$method = recode(ml.melt$method, "glmnet" = "Ridge Regression", "rf" = "R
 # AUC scores for different methods
 ml.plot = ggplot(ml.melt, aes(x = method, y = value, fill=group)) +
   geom_point(alpha = 0.8, color = "darkgrey", size = 1, position = position_jitterdodge(jitter.width=0.1, dodge.width=0.5, jitter.height = 0)) +
-  geom_boxplot(alpha=0.5, outlier.colour=NA, width=0.5) + # This removes the outliers
+  geom_boxplot(alpha=0.5, outlier.colour=NA, width=0.5) +
   geom_hline(yintercept = 0.7, linetype="dashed") +
-  coord_flip() +
+  coord_flip(ylim = c(0.5,1)) +
   facet_wrap(~ variable) +
   scale_fill_manual(values = c("steelblue3", "tomato3")) +
   theme_minimal() +
-  ylim(0.5,1) +
   theme(
     strip.background = element_blank(),
     strip.text = element_text(size=14),

@@ -44,20 +44,20 @@ setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGu
 
 # generate roc data
 input.files = list.files(path = ".", pattern = ".Rds", recursive = TRUE)
-input.files = input.files[which(grepl("filtmags|isolates", input.files))]
+input.files = input.files[which(grepl("inf_filtmags_all|inf_isolates_all", input.files))]
 roc.list = lapply(input.files, function(x) {
   cat("Generating ROC data for", x, "...\n")
   genome_type = gsub("_.*", "", basename(x))
   model = strsplit(basename(x), "_")[[1]][[2]]
   roc.data = gen_roc_data(x, "Diseased", genome_type, model)
-  roc.data$TPR = 1-roc.data$specificity
+  roc.data$FPR = 1-roc.data$specificity
   return(roc.data)
 })
 
 roc.combined = as.data.frame(rbindlist(roc.list))
-roc.combined$TPR = round(roc.combined$TPR, digits=3)
+roc.combined$FPR = round(roc.combined$FPR, digits=3)
 roc.combined$sensitivity = round(roc.combined$sensitivity, digits=3)
-roc.agg.mean = aggregate(sensitivity ~ TPR + Genome_type + Model, data=roc.combined, FUN=mean)
+roc.agg.mean = aggregate(sensitivity ~ FPR + Genome_type + Model, data=roc.combined, FUN=mean)
 
 # ensure monotonicity
 for (gtype in unique(roc.agg.mean$Genome_type)) {
@@ -78,7 +78,7 @@ roc.agg.mean$Label = gsub("isolates", "Isolates only", roc.agg.mean$Label)
 
 # get AUCs
 perf.files = list.files(path = ".", pattern = "performance_results.csv", recursive=TRUE)
-perf.files = perf.files[which(grepl("inf_filtmags|inf_isolates", perf.files))]
+perf.files = perf.files[which(grepl("inf_filtmags_all|inf_isolates_all", perf.files))]
 for (perf in perf.files) {
   roc.auc = read.csv(perf)
   genome_type = ifelse(grepl("isolates", basename(perf)), "isolates", "mags")
@@ -92,7 +92,7 @@ for (perf in perf.files) {
 }
 
 # plot roc curve
-roc.curve = ggplot(roc.agg.mean, aes(x=TPR, y=sensitivity, colour=AUC)) +
+roc.curve = ggplot(roc.agg.mean, aes(x=FPR, y=sensitivity, colour=AUC)) +
   geom_line(linewidth=0.5) +
   geom_abline(slope=1, intercept=0, linetype="dashed", colour="grey") +
   theme_classic() + 

@@ -9,14 +9,15 @@ library(ggpubr)
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/machine_learning")
 
 input.files = list.files(path = ".", pattern = "_results.csv", recursive = TRUE)
-input.files = input.files[grep("filtmags|isolates", input.files)]
+input.files = input.files[grep("inf_filtmags_all|inf_isolates_all", input.files)]
 load_ml = function(x) {
   base = basename(x)
   type = gsub("_performance_results.csv", "", base)
   if(grepl("isolates", type)) {
     label = "Isolates"
-    type = gsub("_isolates", "", type)
+    type = gsub("_isolates_all", "", type)
   } else {
+    type = gsub("_filtmags_all", "", type)
     label = "MAGs + Isolates"
   }
   ml.in = read.csv(x)
@@ -38,6 +39,7 @@ box.plot = ggplot(ml.subset, aes(x=Data, y=value, fill=Data)) +
   geom_hline(yintercept=0.7, linetype = "dashed") +
   scale_fill_manual(values=rev(c("darkolivegreen3", "tomato3"))) +
   facet_wrap(~ variable) +
+  coord_cartesian(ylim=c(0.4, 1.05), expand = TRUE) +
   ylab("Score") +
   theme_classic() +
   theme(panel.spacing = unit(2, "lines")) +
