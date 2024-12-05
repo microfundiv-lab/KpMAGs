@@ -1,6 +1,6 @@
-# Klebsiella pneumoniae MAGs
+# _Klebsiella pneumoniae_ MAGs
 
-Repository with custom code used for investigating disease- and health-associated features of Klebsiella pneumoniae using MAGs and isolate genomes.
+Repository with custom code used for investigating disease- and health-associated features of _Klebsiella pneumoniae_ using MAGs and isolate genomes.
 
 ## Workflows
 
