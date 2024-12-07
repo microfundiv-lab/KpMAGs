@@ -1,5 +1,6 @@
 # load libraries
 library(readr)
+library(vegan)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -14,31 +15,35 @@ library(grid)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/metadata")
-combined_data <- read.delim("Metadata_14112024.tsv")
+combined_data = read.delim("Metadata_14112024.tsv")
 combined_data = combined_data[which(combined_data$ST != "0"),]
 
 # subset countries
-country_health_table <- table(combined_data$Country, combined_data$Health_Status)
-country_health_matrix <- as.data.frame.matrix(country_health_table)
+country_health_table = table(combined_data$Country, combined_data$Health_Status)
+country_health_matrix = as.data.frame.matrix(country_health_table)
 select.countries = rownames(country_health_matrix)[which(country_health_matrix$Diseased > 1 & country_health_matrix$Healthy > 1 )]
 combined_data_filt = combined_data[which(combined_data$Country %in% select.countries),]
-country_health_table <- table(combined_data_filt$ST, combined_data_filt$Health_Status)
-country_health_matrix <- as.data.frame.matrix(country_health_table)
+country_health_table = table(combined_data_filt$ST, combined_data_filt$Health_Status)
+country_health_matrix = as.data.frame.matrix(country_health_table)
 
 # ST analysis
-ST_health_table <- table(combined_data$ST, combined_data$Health_Status)
-ST_health_matrix <- as.data.frame.matrix(ST_health_table)
-ST_health_df <- as.data.frame(ST_health_table)
+ST_health_table = table(combined_data$ST, combined_data$Health_Status)
+ST_health_matrix = as.data.frame.matrix(ST_health_table)
+ST_health_df = as.data.frame(ST_health_table)
 
-top_diseased_STs <- combined_data %>%
+# check diversity
+dis.div = diversity(ST_health_matrix$Diseased)
+health.div = diversity(ST_health_matrix$Healthy)
+
+# extract top
+top_diseased_STs = combined_data %>%
   filter(Health_Status == "Diseased") %>%
   group_by(ST) %>%
   summarize(Count = n()) %>%
   arrange(desc(Count)) %>%
   top_n(6, Count)
 
-#top 10 prevalent STs for healthy
-top_healthy_STs <- combined_data %>%
+top_healthy_STs = combined_data %>%
   filter(Health_Status == "Healthy") %>%
   group_by(ST) %>%
   summarize(Count = n()) %>%
@@ -46,7 +51,7 @@ top_healthy_STs <- combined_data %>%
   top_n(5, Count)
 
 #plot for diseased Population
-plot_diseased <- ggplot(top_diseased_STs, aes(x = reorder(ST, -Count), y = Count)) +
+plot_diseased = ggplot(top_diseased_STs, aes(x = reorder(ST, -Count), y = Count)) +
   geom_bar(stat = "identity", fill = '#D55E00', width = 0.4) +
   labs(x = "", y = "") +
   theme_classic() +
@@ -62,7 +67,7 @@ plot_diseased <- ggplot(top_diseased_STs, aes(x = reorder(ST, -Count), y = Count
   ) 
 
 #healthy population
-plot_healthy <- ggplot(top_healthy_STs, aes(x = reorder(ST, -Count), y = Count)) +
+plot_healthy = ggplot(top_healthy_STs, aes(x = reorder(ST, -Count), y = Count)) +
   geom_bar(stat = "identity", fill = '#0072B2', width = 0.4) +
   labs(x = "Sequence Type (ST)", y = "") +
   theme_classic() +
