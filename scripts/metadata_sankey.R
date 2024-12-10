@@ -6,7 +6,7 @@ library(gplots)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data")
-metadata = read.delim("metadata/Metadata_14112024.tsv")
+metadata = read.delim("metadata/Metadata_09122024.tsv")
 metadata$Health_Status[is.na(metadata$Health_Status)] = "Unknown status"
 metadata$Country[is.na(metadata$Country)] = "Unknown country"
 
@@ -18,15 +18,15 @@ metadata$Country = gsub("ElSalvador", "El Salvador", metadata$Country)
 metadata$Country = gsub("SouthAfrica", "South Africa", metadata$Country)
 
 # parse data
-df <- metadata %>%
+df = metadata %>%
   make_long(Genome_Type, Health_Status, Country)
 df
 
 # tally groups
-dagg <- df %>%
+dagg = df %>%
   dplyr::group_by(node)%>%
   tally()
-df2 <- merge(df, dagg, by.x = 'node', by.y = 'node', all.x = TRUE)
+df2 = merge(df, dagg, by.x = 'node', by.y = 'node', all.x = TRUE)
 
 
 # define colors

@@ -5,13 +5,13 @@ library(picante)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/")
-metadata = read.delim("metadata/Metadata_14112024.tsv")
+metadata = read.delim("metadata/Metadata_09122024.tsv")
 rownames(metadata) = metadata$Genome
 tree = read.tree("itol/species/panaroo.nwk")
 tree = midpoint.root(tree)
 
 #subsetting isolates & mags
-metadata = metadata[which(metadata$Health_Status == "Healthy"),]
+metadata = metadata[which(metadata$Health_Status == "Healthy"),] #  Healthy or Diseased
 isolates = rownames(metadata)[which(metadata$Genome_Type == "Isolate")]
 mags = rownames(metadata)[which(metadata$Genome_Type == "MAG")]
 

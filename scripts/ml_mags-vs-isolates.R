@@ -8,16 +8,14 @@ library(ggpubr)
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/machine_learning")
 
-input.files = list.files(path = ".", pattern = "_results.csv", recursive = TRUE)
-input.files = input.files[grep("inf_filtmags_all|inf_isolates_all", input.files)]
+input.files = list.files(path = ".", pattern = "_results.csv", recursive = FALSE)
 load_ml = function(x) {
   base = basename(x)
-  type = gsub("_performance_results.csv", "", base)
+  type = gsub("_results.csv", "", base)
   if(grepl("isolates", type)) {
     label = "Isolates"
-    type = gsub("_isolates_all", "", type)
+    type = gsub("_isolates", "", type)
   } else {
-    type = gsub("_filtmags_all", "", type)
     label = "MAGs + Isolates"
   }
   ml.in = read.csv(x)

@@ -13,12 +13,12 @@ setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGu
 pa = read_rtab("panaroo/gene_presence_absence.Rtab")
 tree = read.tree("itol/species/panaroo.nwk")
 tree = midpoint.root(tree)
-metadata = read.delim("metadata/Metadata_14112024.tsv")
+metadata = read.delim("metadata/Metadata_09122024.tsv")
 rownames(metadata) = metadata$Genome
-gwas.mags = read.delim("gwas/mags_vs_isolates/pyseer_results-genes.tsv")
+gwas.mags = read.delim("gwas/gtype_results-genes.tsv")
 gwas.mags$FDR = p.adjust(gwas.mags$lrt.pvalue, method="fdr")
 gwas.mags = gwas.mags[which(gwas.mags$FDR < 0.05),]
-gwas = read.delim("gwas/diseased-inf/pyseer_results-genes.tsv")
+gwas = read.delim("gwas/diseased-inf_results-genes.tsv")
 gwas$FDR = p.adjust(gwas$lrt.pvalue, method="fdr")
 gwas = gwas[which(gwas$FDR < 0.05 & !gwas$variant %in% gwas.mags$variant),]
 gwas.pos = gwas[which(gwas$beta > 0),]

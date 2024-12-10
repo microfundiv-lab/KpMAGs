@@ -40,11 +40,10 @@ gen_roc_data = function(model, outcome, genome_type, model_name){
 }
 
 # load best models
-setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/machine_learning/")
+setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/machine_learning/models")
 
 # generate roc data
-input.files = list.files(path = ".", pattern = ".Rds", recursive = TRUE)
-input.files = input.files[which(grepl("inf_filtmags_all|inf_isolates_all", input.files))]
+input.files = list.files(path = ".", pattern = ".Rds", recursive = FALSE)
 roc.list = lapply(input.files, function(x) {
   cat("Generating ROC data for", x, "...\n")
   genome_type = gsub("_.*", "", basename(x))
@@ -55,30 +54,29 @@ roc.list = lapply(input.files, function(x) {
 })
 
 roc.combined = as.data.frame(rbindlist(roc.list))
-roc.combined$FPR = round(roc.combined$FPR, digits=3)
-roc.combined$sensitivity = round(roc.combined$sensitivity, digits=3)
-roc.agg.mean = aggregate(sensitivity ~ FPR + Genome_type + Model, data=roc.combined, FUN=mean)
+roc.combined$FPR = round(roc.combined$FPR, digits=4)
+roc.combined$sensitivity = round(roc.combined$sensitivity, digits=4)
+roc.agg.median = aggregate(sensitivity ~ FPR + Genome_type + Model, data=roc.combined, FUN=median)
 
 # ensure monotonicity
-for (gtype in unique(roc.agg.mean$Genome_type)) {
-  for (model in unique(roc.agg.mean$Model)) {
-    select.rows = which(roc.agg.mean$Genome_type == gtype & roc.agg.mean$Model == model)
+for (gtype in unique(roc.agg.median$Genome_type)) {
+  for (model in unique(roc.agg.median$Model)) {
+    select.rows = which(roc.agg.median$Genome_type == gtype & roc.agg.median$Model == model)
     for (n in select.rows[2:length(select.rows)]){
-      roc.agg.mean[n,"sensitivity"] = ifelse(roc.agg.mean[n-1,"sensitivity"] > roc.agg.mean[n,"sensitivity"], roc.agg.mean[n-1,"sensitivity"], roc.agg.mean[n,"sensitivity"])
+      roc.agg.median[n,"sensitivity"] = ifelse(roc.agg.median[n-1,"sensitivity"] > roc.agg.median[n,"sensitivity"], roc.agg.median[n-1,"sensitivity"], roc.agg.median[n,"sensitivity"])
     }
   }
 }
 
 # label
-roc.agg.mean$Model = recode(roc.agg.mean$Model, "glmnet" = "Ridge Regression", "rf" = "Random Forest", "xgbTree" = "Gradient Boosting")
-roc.agg.mean$Label = paste0(roc.agg.mean$Genome_type, ", ", roc.agg.mean$Model)
-roc.agg.mean$Label = gsub("mags", "MAGs + Isolates", roc.agg.mean$Label)
-roc.agg.mean$Label = gsub("isolates", "Isolates only", roc.agg.mean$Label)
+roc.agg.median$Model = recode(roc.agg.median$Model, "glmnet" = "Ridge Regression", "rf" = "Random Forest", "xgbTree" = "Gradient Boosting")
+roc.agg.median$Label = paste0(roc.agg.median$Genome_type, ", ", roc.agg.median$Model)
+roc.agg.median$Label = gsub("mags", "MAGs + Isolates", roc.agg.median$Label)
+roc.agg.median$Label = gsub("isolates", "Isolates only", roc.agg.median$Label)
 
 
 # get AUCs
-perf.files = list.files(path = ".", pattern = "performance_results.csv", recursive=TRUE)
-perf.files = perf.files[which(grepl("inf_filtmags_all|inf_isolates_all", perf.files))]
+perf.files = list.files(path = "../", pattern = "_results.csv", recursive=FALSE, full.names = TRUE)
 for (perf in perf.files) {
   roc.auc = read.csv(perf)
   genome_type = ifelse(grepl("isolates", basename(perf)), "isolates", "mags")
@@ -87,12 +85,12 @@ for (perf in perf.files) {
   for (model in unique(roc.auc$method)) {
     auc.value = round(median(roc.auc[which(roc.auc$method == model),"AUC"], na.rm=TRUE),3)
     model.name = recode(model, "glmnet" = "Ridge Regression", "rf" = "Random Forest", "xgbTree" = "Gradient Boosting")
-    roc.agg.mean[which(roc.agg.mean$Genome_type == genome_type & roc.agg.mean$Model == model.name),"AUC"] = paste0(genome_ren, ", ", model.name, ", AUROC = ", auc.value)
+    roc.agg.median[which(roc.agg.median$Genome_type == genome_type & roc.agg.median$Model == model.name),"AUC"] = paste0(genome_ren, ", ", model.name, ", AUROC = ", auc.value)
   }
 }
 
 # plot roc curve
-roc.curve = ggplot(roc.agg.mean, aes(x=FPR, y=sensitivity, colour=AUC)) +
+roc.curve = ggplot(roc.agg.median, aes(x=FPR, y=sensitivity, colour=AUC)) +
   geom_line(linewidth=0.5) +
   geom_abline(slope=1, intercept=0, linetype="dashed", colour="grey") +
   theme_classic() + 
@@ -101,7 +99,7 @@ roc.curve = ggplot(roc.agg.mean, aes(x=FPR, y=sensitivity, colour=AUC)) +
   xlim(0,1) +
   ylab("True Positive Rate") + 
   xlab("False Positive Rate") +
-  scale_colour_manual(values=rev(c("darkolivegreen", "darkolivegreen3", "darkolivegreen2",
+  scale_colour_manual(values=rev(c("darkolivegreen2", "darkolivegreen3", "darkolivegreen",
                                "tomato1", "tomato3", "tomato4"))) +
   theme(legend.position="right") +
   guides(colour = guide_legend(override.aes = list(linewidth = 2))) +

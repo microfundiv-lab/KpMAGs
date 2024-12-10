@@ -4,9 +4,9 @@ library(ggpubr)
 library(ggplot2)
 
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/machine_learning/")
-disease.all = read.csv("diseased-all_filtmags_all/diseased-all_filtmags_all_performance_results.csv")
+disease.all = read.csv("diseased-all_results.csv")
 disease.all$group = "Diseased (all)"
-disease.inf = read.csv("diseased-inf_filtmags_all/diseased-inf_filtmags_all_performance_results.csv")
+disease.inf = read.csv("diseased-inf_results.csv")
 disease.inf$group = "Diseased (infection only)"
 ml.data = rbind(disease.all, disease.inf)
 ml.melt = reshape2::melt(ml.data)

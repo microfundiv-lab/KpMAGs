@@ -7,11 +7,11 @@ library(tidyverse)
 library(ggpubr)
 
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/gwas/")
-COG_pyseer_health = read.csv("diseased-inf/pyseer_results-cogs_nomags.csv")
-pyseer_mags = read.delim("mags_vs_isolates//pyseer_results-genes.tsv")
+COG_pyseer_health = read.csv("diseased-inf_results-cogs.csv")
+pyseer_mags = read.delim("gtype_results-genes.tsv")
 pyseer_mags$p.adjust = p.adjust(pyseer_mags$lrt.pvalue, method="fdr")
 pyseer_mags = pyseer_mags[which(pyseer_mags$p.adjust < 0.05),]
-pyseer_health = read.delim("diseased-inf/pyseer_results-genes.tsv")
+pyseer_health = read.delim("diseased-inf_results-genes.tsv")
 pyseer_health$p.adjust = p.adjust(pyseer_health$lrt.pvalue, method="fdr")
 pyseer_health = pyseer_health[which(!pyseer_health$variant %in% pyseer_mags$variant),]
 pyseer_health$Direction = ifelse(pyseer_health$p.adjust < 0.05, ifelse(pyseer_health$beta > 0, "Diseased", "Healthy"), "Not Sig")

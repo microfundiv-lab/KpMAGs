@@ -7,8 +7,9 @@ library(ggsignif)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/")
-metadata = read.delim("metadata/Metadata_14112024.tsv")
+metadata = read.delim("metadata/Metadata_09122024.tsv")
 metadata = metadata[which(!is.na(metadata$Health_Status)),]
+klebo = read.delim("kleborate/Kleborate_results.tsv")
 
 virulence_plot <- ggplot(metadata, aes(x = factor(Virulence_score), fill = Health_Status)) +
   geom_histogram(stat="count", colour="grey", width=0.75, alpha=0.9) +

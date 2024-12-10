@@ -15,7 +15,7 @@ library(grid)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/metadata")
-combined_data = read.delim("Metadata_14112024.tsv")
+combined_data = read.delim("Metadata_09122024.tsv")
 combined_data = combined_data[which(combined_data$ST != "0"),]
 
 # subset countries
@@ -62,7 +62,7 @@ plot_diseased = ggplot(top_diseased_STs, aes(x = reorder(ST, -Count), y = Count)
     axis.text.y = element_text(size = 20),
     plot.margin=unit(c(1.5,1,1,1), 'cm'),
     plot.title = element_blank(),  
-    panel.grid.major = element_line(size = 0.5, linetype = 'dashed'),
+    panel.grid.major = element_line(linewidth = 0.5, linetype = 'dashed'),
     panel.grid.minor = element_blank() 
   ) 
 
@@ -77,7 +77,7 @@ plot_healthy = ggplot(top_healthy_STs, aes(x = reorder(ST, -Count), y = Count)) 
     axis.text.x = element_text(size = 20),  
     axis.text.y = element_text(size = 20),  
     plot.title = element_blank(),
-    panel.grid.major = element_line(size = 0.5, linetype = 'dashed'),
+    panel.grid.major = element_line(linewidth = 0.5, linetype = 'dashed'),
     panel.grid.minor = element_blank() 
   )
 

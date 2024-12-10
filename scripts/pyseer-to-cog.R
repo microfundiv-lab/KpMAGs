@@ -5,8 +5,8 @@ library(reshape2)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/")
-pyseer_mags = read.delim("gwas/mags_vs_isolates//pyseer_results-genes.tsv", header = TRUE, sep = "\t")
-pyseer_health = read.delim("gwas/diseased-inf/pyseer_results-genes.tsv", header = TRUE, sep = "\t")
+pyseer_mags = read.delim("gwas/gtype_results-genes.tsv", header = TRUE, sep = "\t")
+pyseer_health = read.delim("gwas/diseased-inf_results-genes.tsv", header = TRUE, sep = "\t")
 eggnog = read.delim("panaroo/eggnog_v2-1-3.tsv", header = TRUE, sep = "\t")
 colnames(eggnog)[1] = "variant"
 
@@ -109,4 +109,4 @@ result.df = result.df[which(result.df$FDR < 0.2),]
 result.df$Classification = ifelse(result.df$result > 0, "Diseased", "Healthy")
 
 # save file
-write.csv(COG_pyseer_health, "gwas/diseased-inf/pyseer_results-cogs_nomags.csv", row.names = FALSE)
+write.csv(COG_pyseer_health, "gwas/diseased-inf_results-cogs.csv", row.names = FALSE)
