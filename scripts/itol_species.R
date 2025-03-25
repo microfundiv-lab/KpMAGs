@@ -9,7 +9,7 @@ library(gplots)
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data")
 
 # load da data
-itol.df = read.delim("metadata/Metadata_09122024.tsv", check.names=FALSE)
+itol.df = read.delim("metadata/Metadata_15022025.tsv", check.names=FALSE)
 rownames(itol.df) = itol.df$Genome
 
 # create itol dataset with country

@@ -33,7 +33,7 @@ gen_roc_data = function(model, outcome, genome_type, model_name){
   prob = predict(select.model$trained_model, select.model$test_data, type="prob")
   observed = select.model$test_data$Variable
   prob_obs = bind_cols(prob, observed=observed)
-  roc.data = map_dfr(.x=outcome, .f=get_sens_spec_lookup, prob_obs)
+  roc.data = purrr::map_dfr(.x=outcome, .f=get_sens_spec_lookup, prob_obs)
   roc.data$Genome_type = genome_type
   roc.data$Model = model_name
   return(roc.data)

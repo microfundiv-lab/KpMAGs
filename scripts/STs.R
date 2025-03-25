@@ -15,8 +15,11 @@ library(grid)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/metadata")
-combined_data = read.delim("Metadata_09122024.tsv")
+combined_data = read.delim("Metadata_15022025.tsv")
 combined_data = combined_data[which(combined_data$ST != "0"),]
+
+# only healthy and infection
+#combined_data = combined_data[which(combined_data$Disease_Name %in% c("Infection", "Diarrhoea", "Healthy")),]
 
 # subset countries
 country_health_table = table(combined_data$Country, combined_data$Health_Status)
@@ -31,9 +34,18 @@ ST_health_table = table(combined_data$ST, combined_data$Health_Status)
 ST_health_matrix = as.data.frame.matrix(ST_health_table)
 ST_health_df = as.data.frame(ST_health_table)
 
+# check common STs
+common.sts = names(which(rowSums(ST_health_matrix > 0) == 2))
+common.df = combined_data[which(combined_data$ST %in% common.sts),]
+
+result <- common.df %>%
+  group_by(ST, Country) %>%
+  filter(n_distinct(Health_Status) > 1) %>%
+  ungroup()
+
 # check diversity
-dis.div = diversity(ST_health_matrix$Diseased)
-health.div = diversity(ST_health_matrix$Healthy)
+dis.div = vegan::diversity(ST_health_matrix$Diseased)
+health.div = vegan::diversity(ST_health_matrix$Healthy)
 
 # extract top
 top_diseased_STs = combined_data %>%

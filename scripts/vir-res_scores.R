@@ -7,9 +7,12 @@ library(ggsignif)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/")
-metadata = read.delim("metadata/Metadata_09122024.tsv")
+metadata = read.delim("metadata/Metadata_15022025.tsv")
 metadata = metadata[which(!is.na(metadata$Health_Status)),]
 klebo = read.delim("kleborate/Kleborate_results.tsv")
+
+# only healthy and infection
+metadata = metadata[which(metadata$Disease_Name %in% c("Infection", "Diarrhoea", "Healthy")),]
 
 virulence_plot <- ggplot(metadata, aes(x = factor(Virulence_score), fill = Health_Status)) +
   geom_histogram(stat="count", colour="grey", width=0.75, alpha=0.9) +
@@ -49,6 +52,12 @@ ggsave(file="figures/vir-res_scores.pdf", height=5, width=10)
 vir = wilcox.test(Virulence_score ~ Health_Status, data=metadata)
 res = wilcox.test(Resistance_score ~ Health_Status, data=metadata)
 
+vir.carriage = mean(metadata$Virulence_score[which(metadata$Health_Status == "Healthy")])
+vir.disease = mean(metadata$Virulence_score[which(metadata$Health_Status == "Diseased")])
+
+res.carriage = mean(metadata$Resistance_score[which(metadata$Health_Status == "Healthy")])
+res.disease = mean(metadata$Resistance_score[which(metadata$Health_Status == "Diseased")])
+
 # function to extract genes
 extract_features = function(x, label) {
   subset.df = klebo[,which(grepl(x, colnames(klebo)))]
@@ -81,5 +90,5 @@ lolli = ggplot(amr.fi, aes(x=reorder(subset.vec, -Freq), y=Freq, fill=Label)) +
 
 # combine final plot
 ggarrange(vir.amr.plot, lolli, ncol=1, labels=c("", "c"), font.label = list(size=20))
-ggsave("figures/vir-res_combined.pdf", height=7, width=12)
+ggsave("figures/vir-res_combined.pdf", height=9, width=12)
 

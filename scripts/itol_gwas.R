@@ -13,7 +13,7 @@ setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGu
 pa = read_rtab("panaroo/gene_presence_absence.Rtab")
 tree = read.tree("itol/species/panaroo.nwk")
 tree = midpoint.root(tree)
-metadata = read.delim("metadata/Metadata_09122024.tsv")
+metadata = read.delim("metadata/Metadata_15022025.tsv")
 rownames(metadata) = metadata$Genome
 gwas.mags = read.delim("gwas/gtype_results-genes.tsv")
 gwas.mags$FDR = p.adjust(gwas.mags$lrt.pvalue, method="fdr")

@@ -8,7 +8,7 @@ library(data.table)
 library(panstripe)
 
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data")
-metadata = read.delim("metadata/Metadata_09122024.tsv")
+metadata = read.delim("metadata/Metadata_15022025.tsv")
 rownames(metadata) = metadata$Genome
 
 # reformat health status
@@ -95,3 +95,7 @@ adonis.plot = ggplot(adonis_all, aes(x = reorder(Variable,R2_adj), y = R2_adj, f
     legend.title = element_blank()) +
   scale_y_continuous(expand = expansion(mult = c(0.05, 0.25)))
 ggsave(file = "figures/metadata_adonis.pdf", height=8, width=4)
+
+# save table
+adonis_all$Variable = gsub("\n", " ", adonis_all$Variable)
+write.table(adonis_all, file = "tables/SupplementaryTable2.tsv", quote=FALSE, sep="\t", row.names=FALSE)

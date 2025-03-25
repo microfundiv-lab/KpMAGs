@@ -7,7 +7,7 @@ library(ggpubr)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/mash/")
-metadata = read.delim("../metadata/Metadata_09122024.tsv")
+metadata = read.delim("../metadata/Metadata_15022025.tsv")
 mags = metadata$Genome[which(metadata$Genome_Type == "MAG")]
 rownames(metadata) = metadata$Genome
 metadata[is.na(metadata)] = "Unknown"
@@ -80,4 +80,3 @@ ggsave("../figures/mash_comb.pdf", height=5, width=10)
 
 # save table of best hits
 write.table(closest_matches, file="best_matches.tsv", row.names=FALSE, quote=FALSE, sep="\t")
-

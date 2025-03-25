@@ -9,13 +9,13 @@ setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGu
 pa = read_rtab("panaroo/gene_presence_absence.Rtab") 
 
 # define function
-panplots <- function(data, curve = "pan", iterations = 5, thresh) {
+panplots = function(data, curve = "pan", iterations = 5, thresh) {
  
-  nr_rows <- nrow(data);
-  nr_iterations <- iterations;
+  nr_rows = nrow(data);
+  nr_iterations = iterations;
   
   #create empty matrix to store temp results
-  temp <- matrix(data=NA,nrow=nr_rows,ncol=nr_iterations)
+  temp = matrix(data=NA,nrow=nr_rows,ncol=nr_iterations)
   
   if(curve == "core") {
     
@@ -42,7 +42,7 @@ panplots <- function(data, curve = "pan", iterations = 5, thresh) {
   } 
   
   # summarize permutation results using "matrixStats" library
-  summary <- data.frame(genomes=c(1:nr_rows)) 
+  summary = data.frame(genomes=c(1:nr_rows)) 
   summary$mean=rowMeans2(temp[,c(-1)])
   summary$sd=rowSds(temp[,c(-1)])
   summary$group=deparse(substitute(data))

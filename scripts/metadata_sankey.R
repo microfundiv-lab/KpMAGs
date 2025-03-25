@@ -6,7 +6,7 @@ library(gplots)
 
 # load data
 setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data")
-metadata = read.delim("metadata/Metadata_09122024.tsv")
+metadata = read.delim("metadata/Metadata_15022025.tsv")
 metadata$Health_Status[is.na(metadata$Health_Status)] = "Unknown status"
 metadata$Country[is.na(metadata$Country)] = "Unknown country"
 
