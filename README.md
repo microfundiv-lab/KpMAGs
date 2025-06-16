@@ -17,17 +17,19 @@ These scripts were used for downstream analysis and plotting:
 
 * [itol_gwas.R](scripts/itol_gwas.R)
 * [itol_species.R](scripts/itol_species.R)
+* [itol_novel.R](scripts/itol_novel.R)
 * [metadata_adonis.R](scripts/metadata_adonis.R)
 * [metadata_sankey.R](scripts/metadata_sankey.R)
 * [tanglegram_panaroo-vs-snippy.R](scripts/tanglegram_panaroo-vs-snippy.R)
 * [tanglegram_pan-vs-core.R](scripts/tanglegram_pan-vs-core.R)
 * [pd_fold-change.R](scripts/pd_fold-change.R)
 
-#### <ins>Pan-genome reconstruction</ins>
+#### <ins>Pan-genome analysis</ins>
 
 * [panaroo_cog-plot.R](scripts/panaroo_cog-plot.R)
 * [panaroo_combined.R](scripts/panaroo_combined.R)
 * [panaroo_params.R](scripts/panaroo_params.R)
+* [mags_genes.R](scripts/mags_genes.R)
 
 #### <ins>Machine Learning modelling</ins>
 
@@ -42,6 +44,5 @@ These scripts were used for downstream analysis and plotting:
 
 #### <ins>Other</ins>
 
-* [vir-res_scores.R](scripts/vir-res_scores.R)
-* [STs.R](scripts/STs.R)
+* [STs_gtype.R](scripts/STs.R)
 * [mash_refseq.R](scripts/mash_refseq.R)

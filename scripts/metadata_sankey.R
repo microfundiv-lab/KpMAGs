@@ -40,9 +40,9 @@ ggplot(df2, aes(x = x,
                next_node = next_node,
                fill = factor(node),
                label = paste0(node," n=", n))) +
-  geom_sankey(flow.alpha = 0.5, node.color = 0, alpha=0.6, type="sankey", space=22) +
+  geom_sankey(flow.alpha = 0.5, node.color = 0, alpha=0.6, type="sankey", space=18) +
   scale_fill_manual(values=sankey.cols) +
-  geom_sankey_label(size = 4, color = 1, fill = "white", alpha=0.75, label.size = NA, space=22) +
+  geom_sankey_label(size = 4, color = 1, fill = "white", alpha=0.75, label.size = NA, space=18) +
   theme_sankey(base_size = 16) +
   theme(legend.position = "none") +
   theme(axis.title = element_blank()) +

@@ -11,7 +11,6 @@ tree = read.tree("itol/species/panaroo.nwk")
 tree = midpoint.root(tree)
 
 #subsetting isolates & mags
-metadata = metadata[which(metadata$Health_Status == "Diseased"),] #  Healthy or Diseased
 isolates = rownames(metadata)[which(metadata$Genome_Type == "Isolate")]
 mags = rownames(metadata)[which(metadata$Genome_Type == "MAG")]
 
