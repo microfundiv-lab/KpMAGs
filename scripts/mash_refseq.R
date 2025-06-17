@@ -6,12 +6,12 @@ library(RColorBrewer)
 library(ggpubr)
 
 # load data
-setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/mash/")
-metadata = read.delim("../metadata/Metadata_15022025.tsv")
+setwd("~/OneDrive - University of Cambridge/MFD_shared/Projects/2023_SamriddhiGupta_Thesis/data/")
+metadata = read.delim("metadata/Metadata_15022025.tsv")
 mags = metadata$Genome[which(metadata$Genome_Type == "MAG")]
 rownames(metadata) = metadata$Genome
 metadata[is.na(metadata)] = "Unknown"
-distances = fread("distances.tab")
+distances = fread("mash/distances.tab")
 str(distances)
 setnames(distances, c("ref_genome", "mag", "distance", "p_value", "shared_hashes"))
 
@@ -31,7 +31,7 @@ closest_matches$mag = as.vector(gsub(".fa.gz", "", basename(closest_matches$mag)
 closest_matches = closest_matches[which(closest_matches$mag %in% mags),]
 
 mash.plot = ggplot(closest_matches, aes(x = distance)) +
-  geom_histogram(aes(y = ..density..), bins = 30, fill = "grey", color = "black", alpha = 0.7) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "grey", color = "black", alpha = 0.7) +
   geom_density(color = "#377EB8", linewidth = 1) +
   geom_vline(xintercept = 0.005, linetype="dashed") +
   labs(x = "Mash distance", y = "Number of MAGs") +
@@ -66,7 +66,7 @@ meta.plot = ggplot(new.lineages.melt, aes(x=reorder(Var2, -Count), y=Count, fill
   geom_bar(stat="identity", alpha=0.7) +
   theme_classic() +
   scale_fill_manual(values=colors.dict, name="Variable") +
-  scale_x_discrete(labels=c("Health status", "Country")) +
+  scale_x_discrete(labels=c("Health\nstatus", "Country")) +
   ylab("Number of MAGs") +
   xlab("") +
   theme(
@@ -75,8 +75,12 @@ meta.plot = ggplot(new.lineages.melt, aes(x=reorder(Var2, -Count), y=Count, fill
   )
 
 # combine plot and save
-comb.plot = ggarrange(mash.plot, meta.plot, ncol=2, widths=c(1.7,1), labels=c("a", "b"), font.label = list(size=16))
-ggsave("../figures/mash_comb.pdf", height=5, width=10)
+source("../scripts/alex/pd_fold-change_country.R")
+comb.plot = ggarrange(mash.plot, meta.plot, phylo, ncol=3, widths=c(1.4,1,0.9), labels=c("a", "b", "c"), font.label = list(size=16))
+ggsave("figures/mash_comb.pdf", height=5, width=11)
 
-# save table of best hits
-write.table(closest_matches, file="best_matches.tsv", row.names=FALSE, quote=FALSE, sep="\t")
+# save tables
+write.table(closest_matches, file="mash/best_matches.tsv", row.names=FALSE, quote=FALSE, sep="\t")
+novel.lineages = closest_matches[which(closest_matches$distance > 0.005),]
+write.table(unique(novel.lineages$ref_genome), file="mash/novel_lineages_refseq.txt", col.names=FALSE, quote=FALSE, row.names=FALSE)
+write.table(unique(novel.lineages$mag), file="mash/novel_lineages_mag.txt", col.names=FALSE, quote=FALSE, row.names=FALSE)
